@@ -21,19 +21,19 @@ router.post("/signup/avatar", userController.updateAvatar);
 
 
 //LOGIN USER
-router.post("/login",userController.loginUser);
+router.post("/login", userController.loginUser);
 
 router.put("/Profile", userController.updateUser)
 
 
-router.get('/user', authenticateToken,async ( req,res)=>{
+router.get('/user', authenticateToken, async (req, res) => {
   try {
-  const userId = req.userId;
-  const user = await User.getUserByUserId(userId);
-  if ( user) {
+    const userId = req.userId;
+    const user = await User.getUserByUserId(userId);
+    if (user) {
       return res.json({
         Status: "Success",
-        userData: user 
+        userData: user
       });
     } else {
       return res.status(404).json({ error: "User or deck not found" });
@@ -45,5 +45,25 @@ router.get('/user', authenticateToken,async ( req,res)=>{
 
 })
 
+//GET ALL USERS
+router.get('/users', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.userId;
+    console.log('userId :>> ', userId);
+    const users = await User.getAllUsers(userId);
+    if (users) {
+      return res.json({
+        Status: "Success",
+        usersData: users
+      });
+    } else {
+      return res.status(404).json({ error: "User or deck not found" });
+    }
+  } catch (err) {
+    console.error('Error fetching user and deck information:', err);
+    return res.status(500).json({ error: "An error occurred" });
+  }
+
+})
 
 module.exports = router;

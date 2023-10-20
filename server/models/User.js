@@ -28,7 +28,7 @@ class User {
     });
   }
 
-//READ 
+  //READ 
 
 
   static async createUser(email, username, password, callback) {
@@ -41,7 +41,7 @@ class User {
         callback(err);
       } else {
         const userId = result.insertId
-        callback(null,userId);
+        callback(null, userId);
       }
     });
   }
@@ -63,7 +63,7 @@ class User {
   static async checkExistingUser(username, callback) {
     const query = 'SELECT COUNT(*) AS count FROM users WHERE username = ?';
     const values = [username];
-  
+
     db.query(query, values, (err, result) => {
       if (err) {
         console.error("Error while checking username:", err);
@@ -85,7 +85,7 @@ class User {
     return new Promise((resolve, reject) => {
       const query = 'SELECT * FROM users WHERE id = ?';
       const values = [userId];
-  
+
       db.query(query, values, (err, result) => {
         if (err) {
           console.error('Error while retrieving user by username:', err);
@@ -99,16 +99,55 @@ class User {
         }
       });
     });
-  }
-  
-  
-  
+  };
+
+  static async getAllUsers(userId) {
+    return new Promise((resolve, reject) => {
+      const query = 'SELECT * FROM users WHERE id <> ?';
+      const values = [userId];
+
+      db.query(query, values, (err, result) => {
+        if (err) {
+          console.error('Error while retrieving all users:', err);
+          reject(err);
+        } else {
+          if (result.length > 0) {
+            resolve(result); // Resolve with the users data
+          } else {
+            resolve(null); // No users
+          }
+        }
+      });
+    });
+  };  
+
+  static async getUserByUserUsername(username) {
+    return new Promise((resolve, reject) => {
+      const query = 'SELECT * FROM users WHERE username = ?';
+      const values = [username];
+
+      db.query(query, values, (err, result) => {
+        if (err) {
+          console.error('Error while retrieving user by username:', err);
+          reject(err);
+        } else {
+          if (result.length > 0) {
+            resolve(result[0]); // Resolve with the user data
+          } else {
+            resolve(null); // User not found
+          }
+        }
+      });
+    });
+  };
+
+
 
 
   //UPDATE
 
 
-  static async addAvatar(userId, avatar_api,callback) {
+  static async addAvatar(userId, avatar_api, callback) {
 
     const query = 'UPDATE users SET avatar_api = ? WHERE id = ?';
     const values = [avatar_api, userId];
@@ -117,7 +156,7 @@ class User {
       if (err) {
         console.error('Error while adding avatar:', err);
       } else {
-        console.log(callback,'Avatar added succesfully ')
+        console.log(callback, 'Avatar added succesfully ')
 
       }
     });
@@ -127,7 +166,7 @@ class User {
     Object.keys(data).forEach((key) => {
       const query = `UPDATE users SET ${key} = ? WHERE id = ?`;
       const values = [data[key], userId];
-  
+
       db.query(query, values, (err, result) => {
         if (err) {
           console.error(`Error while updating user ${key}:`, err);
@@ -140,13 +179,13 @@ class User {
       });
     });
   }
-  
-  
 
 
-  
+  //DELETE
 
-  static async DeleteUser(userId,callback) {
+
+
+  static async DeleteUser(userId, callback) {
 
     const query = 'DELETE users WHERE id = ?';
     const values = [userId];
@@ -155,17 +194,17 @@ class User {
       if (err) {
         console.error('Error while adding avatar:', err);
       } else {
-        console.log(callback,'Avatar added succesfully ')
+        console.log(callback, 'Avatar added succesfully ')
 
       }
     });
   }
-  
 
-  
-  
 
-    }
+
+
+
+}
 
 
 module.exports = User;
