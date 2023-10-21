@@ -123,7 +123,7 @@ class User {
 
   static async getUserByUserUsername(username) {
     return new Promise((resolve, reject) => {
-      const query = 'SELECT * FROM users WHERE username = ?';
+      const query = 'SELECT * FROM users WHERE username LIKE %?%';
       const values = [username];
 
       db.query(query, values, (err, result) => {

@@ -49,7 +49,6 @@ router.get('/user', authenticateToken, async (req, res) => {
 router.get('/users', authenticateToken, async (req, res) => {
   try {
     const userId = req.userId;
-    console.log('userId :>> ', userId);
     const users = await User.getAllUsers(userId);
     if (users) {
       return res.json({
@@ -64,6 +63,29 @@ router.get('/users', authenticateToken, async (req, res) => {
     return res.status(500).json({ error: "An error occurred" });
   }
 
+})
+
+//SEARCH FOR USER
+router.get('/search', async (req, res) => {
+  try {
+    const url = new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+    console.log('currentUrl :>> ', url);
+    const searchParams = url.searchParams;
+    const searched = searchParams.get('user');
+    console.log('searched :>> ', searched);
+    const user = await User.getUserByUserUsername(searched);
+    if (user) {
+      return res.json({
+        Status: "Success",
+        userData: user
+      });
+    } else {
+      return res.status(404).json({ error: "User or deck not found" });
+    }
+  } catch (err) {
+    console.error('Error fetching user and deck information:', err);
+    return res.status(500).json({ error: "An error occurred" });
+  }
 })
 
 module.exports = router;
