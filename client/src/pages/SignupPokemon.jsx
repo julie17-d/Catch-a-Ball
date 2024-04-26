@@ -1,3 +1,5 @@
+const cardIds = require('../../config/cardIds.json');
+
 import ChooseACard from '../components/ChooseACard';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -26,16 +28,7 @@ function shuffle(array) {
 };
 
 function SignupPokemon({ darkMode, toggleTheme }) {
-  const apiIds = [
-    "sm75-1", // Charmander
-    "ex6-55", // Bulbasaur
-    "bw10-14", // Squirtle
-    "smp-SM86", // Pikachu
-    "swsh1-83", // Gastly
-    "swshp-SWSH175", // Eevee
-    "hgss4-67", // Machop
-    "pl4-65" // Geodude
-  ];
+  const apiIds = cardIds.signupPokemonIds;
   const [userId, setUserId] = useState(0)
   const [username, setUserName] = useState('')
   

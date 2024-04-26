@@ -1,3 +1,5 @@
+const cardIds = require('../../config/cardIds.json');
+
 import ChooseACard from '../components/ChooseACard';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -7,16 +9,7 @@ import withDarkMode from '../components/withDarkMode';
 const queryClient = new QueryClient();
 
 function SignupAvatar({ darkMode, toggleTheme }) {
-  const apiIds = [
-    "swsh10-189", // Zisu
-    "swsh7-202", // Raihan
-    "sv3pt5-204", // Giovanni
-    "swsh35-73", // Hop
-    "sm3-143", // Guzma
-    "sma-SV82", // Cynthia
-    "sm5-151", // Lillie
-    "bw10-101" // Iris
-  ]
+  const apiIds = cardIds.signupAvatarIds;
   const [userId, setUserId] = useState(0);
   axios.defaults.withCredentials = true;
   useEffect(() => {
